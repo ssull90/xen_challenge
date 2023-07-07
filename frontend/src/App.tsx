@@ -1,15 +1,21 @@
-import { Container } from '@mui/material'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import InvoiceDashboard from './pages/InvoiceDashboard'
+import InvoiceDetails from './pages/InvoiceDetails'
+import Header from './widgets/Header'
+import { Modal } from '@mui/material'
 
 import './App.css'
-
-import InvoiceList from './views/InvoiceList'
 
 function App() {
   return (
     <>
-      <Container>
-        <InvoiceList />
-      </Container>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" Component={InvoiceDashboard} />
+          <Route path="/invoice/:id" Component={InvoiceDetails} />
+        </Routes>
+      </Router>
     </>
   )
 }

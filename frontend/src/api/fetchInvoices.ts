@@ -1,4 +1,4 @@
-import { Invoice } from '../types/Invoice.type'
+import { Invoice, InvoiceAction, InvoiceStateResponse } from '../types'
 
 export const fetchInvoices = () => wrapPromise(getInvoices())
 
@@ -11,9 +11,24 @@ const url = new URL('http://localhost:3000/invoices')
 const getInvoices = () =>
   new Promise<Invoice[]>((resolve, reject) => {
     fetch(url)
-        .then((result) => resolve(result.json()))
-        .catch((error) => reject(error))
+      .then((result) => resolve(result.json()))
+      .catch((error) => reject(error))
   })
+
+export const getOneInvoice = (id: number) =>
+  new Promise<Invoice>((resolve, reject) => {
+    fetch(`${url}/${id}`)
+      .then((result) => resolve(result.json()))
+      .catch((error) => reject(error))
+  })
+
+export const postInvoiceAction = (id: number, action: InvoiceAction) =>
+  new Promise<InvoiceStateResponse>((resolve, reject) => {
+    fetch(`${url}/${id}/${action}`, { method: "POST" })
+      .then((result) => resolve(result.json()))
+      .catch((error) => reject(error))
+  })
+
 
 const wrapPromise = <A>(promise: Promise<A>) => {
   let result: "pending" | Error | A = "pending"
